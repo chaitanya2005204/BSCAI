@@ -115,7 +115,7 @@
   <script>
     // Sample data - update or replace with dynamic data as needed
     const restaurants = [
-      { name: "Tandoori Flames", cuisine: "Indian", location: "Hyderabad", rating: 4.5, contact: "9876543210", image: "1.jpg" },
+      { name: "Tandoori Flames", cuisine: "Indian", location: "Visakhapatnam", rating: 4.5, contact: "9876543210", image: "1.jpg" },
       { name: "Sushi Express", cuisine: "Japanese", location: "Mumbai", rating: 4.2, contact: "9876501234", image: "2.jpg" },
       { name: "Burger Bites", cuisine: "American", location: "Delhi", rating: 4.1, contact: "9867543210", image: "3.jpeg" },
       { name: "Noodle House", cuisine: "Chinese", location: "Hyderabad", rating: 4.3, contact: "9898989898", image: "4.webp" },
@@ -172,4 +172,5 @@
   </script>
 </body>
 </html>
+
 
