@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Restaurant Finder</title>
+  <style>
+    :root{
+      --bg:#f5f7fb;
+      --card:#ffffff;
+      --muted:#666;
+      --accent:#ff6b6b;
+    }
+    *{box-sizing:border-box}
+    body {
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      margin: 0;
+      padding: 32px;
+      background: linear-gradient(180deg,var(--bg),#ffffff);
+      color: #222;
+    }
+    h1{
+      text-align:center;
+      margin: 0 0 20px;
+      font-size: 28px;
+      letter-spacing: .2px;
+    }
+    .search-box{
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      margin-bottom:22px;
+      flex-wrap:wrap;
+    }
+    .search-box input{
+      padding:12px 14px;
+      width:220px;
+      border-radius:10px;
+      border:1px solid #e0e6ef;
+      background: #fff;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.02) inset;
+      font-size:14px;
+    }
+    .restaurant-list{
+      display:grid;
+      gap:18px;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      max-width:1200px;
+      margin: 0 auto;
+    }
+    .card{
+      background: var(--card);
+      border-radius:12px;
+      box-shadow: 0 6px 18px rgba(20,30,50,0.06);
+      overflow:hidden;
+      transition: transform .16s ease, box-shadow .16s ease;
+      display:flex;
+      flex-direction:column;
+    }
+    .card:hover{
+      transform: translateY(-6px);
+      box-shadow: 0 12px 30px rgba(20,30,50,0.09);
+    }
+    .card img{
+      width:100%;
+      height:160px;
+      object-fit:cover;
+      display:block;
+      background:#ddd;
+    }
+    .card-content{
+      padding:14px 16px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .card h3{
+      margin:0;
+      font-size:18px;
+      color:#111;
+    }
+    .meta{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      align-items:center;
+      font-size:13px;
+      color:var(--muted);
+    }
+    .meta strong{color:#333; font-weight:600}
+    .rating{margin-left:auto; color: #f39c12; font-weight:700}
+    .contact{
+      margin-top:8px;
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    @media (max-width:520px){
+      body{padding:18px}
+      .search-box input{width:100%}
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🍽️ Restaurant Finder</h1>
+
+  <div class="search-box">
+    <input type="text" id="locationInput" placeholder="Enter Location (e.g., Hyderabad)">
+    <input type="text" id="cuisineInput" placeholder="Enter Cuisine (e.g., Indian)">
+  </div>
+
+  <div class="restaurant-list" id="restaurantList" aria-live="polite"></div>
+
+  <script>
+    // Sample data - update or replace with dynamic data as needed
+    const restaurants = [
+      { name: "Tandoori Flames", cuisine: "Indian", location: "Hyderabad", rating: 4.5, contact: "9876543210", image: "1.jpg" },
+      { name: "Sushi Express", cuisine: "Japanese", location: "Mumbai", rating: 4.2, contact: "9876501234", image: "2.jpg" },
+      { name: "Burger Bites", cuisine: "American", location: "Delhi", rating: 4.1, contact: "9867543210", image: "3.jpeg" },
+      { name: "Noodle House", cuisine: "Chinese", location: "Hyderabad", rating: 4.3, contact: "9898989898", image: "4.webp" },
+      { name: "Pizza Mania", cuisine: "Italian", location: "Bangalore", rating: 4.0, contact: "9123456789", image: "5.jpeg" }
+    ];
+
+    const locationInput = document.getElementById('locationInput');
+    const cuisineInput = document.getElementById('cuisineInput');
+    const restaurantList = document.getElementById('restaurantList');
+
+    function createCard(restaurant) {
+      const card = document.createElement('div');
+      card.className = 'card';
+      // If image file missing, browser will show broken image - you can replace with placeholder URL
+      card.innerHTML = `
+        <img src="${restaurant.image}" alt="${restaurant.name} photo" onerror="this.onerror=null;this.src='https://via.placeholder.com/600x400?text=No+Image'">
+        <div class="card-content">
+          <h3>${restaurant.name}</h3>
+          <div class="meta">
+            <span><strong>Cuisine:</strong> ${restaurant.cuisine}</span>
+            <span><strong>Location:</strong> ${restaurant.location}</span>
+            <span class="rating">⭐ ${restaurant.rating.toFixed(1)}</span>
+          </div>
+          <div class="contact"><strong>Contact:</strong> 📞 ${restaurant.contact}</div>
+        </div>
+      `;
+      return card;
+    }
+
+    function displayRestaurants(list) {
+      restaurantList.innerHTML = '';
+      if (list.length === 0) {
+        restaurantList.innerHTML = '<p style="text-align:center;color:#666">No restaurants found.</p>';
+        return;
+      }
+      list.forEach(r => restaurantList.appendChild(createCard(r)));
+    }
+
+    function filterRestaurants() {
+      const loc = locationInput.value.trim().toLowerCase();
+      const cuisine = cuisineInput.value.trim().toLowerCase();
+      const filtered = restaurants.filter(r =>
+        r.location.toLowerCase().includes(loc) &&
+        r.cuisine.toLowerCase().includes(cuisine)
+      );
+      displayRestaurants(filtered);
+    }
+
+    locationInput.addEventListener('input', filterRestaurants);
+    cuisineInput.addEventListener('input', filterRestaurants);
+
+    // initial render
+    displayRestaurants(restaurants);
+  </script>
+</body>
+</html>
